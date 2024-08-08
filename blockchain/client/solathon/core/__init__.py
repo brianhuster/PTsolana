@@ -1,1 +1,0 @@
-"""Solathon core"""

@@ -3,376 +3,286 @@ package view
 import viewCommon "github.com/datamonsterr/PTsolana/view/common"
 
 templ Contact() {
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Contact Page">
-	<meta name="keywords" content="contact">
-	<meta name="author" content="Nikola Štefančić">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EnVizion Gym | Contact</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
-  <link rel="stylesheet" href="./styles/general.css">
-  <link rel="stylesheet" href="./styles/header.css">
-  <link rel="stylesheet" href="./styles/footer.css">
-  <link rel="stylesheet" href="./styles/contact.css">
-  <link rel="stylesheet" href="./styles/user-sign.css">
-  <link rel="stylesheet" href="./styles/animations.css">
-
-  <link rel="icon" type="image/x-icon" href="./logos/sparta-logo-red.png">
-
-</head>
-<body>
-  
-  <!-- Header Navbar Section -->
-
-  <header>
-
-    @viewCommon.Navbar()
-
-  </header>
-
-
-  
-
-  <main>
-
-    <!-- User Login || Sign In  -->
-
-    <div class="user-sign-flex">
-      <section class="user-sign-in-container">
-
-        <span class="icon-close" id="closeButton">
-          <ion-icon name="close-circle"></ion-icon>
-        </span>
-  
-        <div class="form-box login">
-          <h2>Login</h2>
-          <form action="#" method="GET">
-    
-            <div class="input-box">
-              <span class="icon"><ion-icon name="mail"></ion-icon></span>
-              <input type="email" required>
-              <label for="email">Email</label>
-            </div>
-    
-    
-            <div class="input-box">
-              <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-              <input type="password" required>
-              <label for="password">Password</label>
-            </div>
-            <div class="remember-forget-pass">
-              <label><input type="checkbox">Remember Me</label>
-              <a href="#" class="forgot-pass">Forgot Password?</a>
-            </div>
-            <button type="submit" class="submit-btn">Login</button>
-            <div class="login-register">
-              <p>Don't have an Account?<a href="#" class="register-link">Register</a></p>
-            </div>
-          </form>
-        </div>
-  
-  
-        <span class="icon-close" id="closeButton">
-          <ion-icon name="close"></ion-icon>
-        </span>
-  
-        <div class="form-box register">
-          <h2>Register</h2>
-          <form action="#" method="GET">
-    
-            <div class="input-box">
-              <span class="icon"><ion-icon name="person"></ion-icon></span>
-              <input type="text" required>
-              <label for="text">Username</label>
-            </div>
-  
-            <div class="input-box">
-              <span class="icon"><ion-icon name="mail"></ion-icon></span>
-              <input type="email" required>
-              <label for="email">Email</label>
-            </div>
-    
-            <div class="input-box">
-              <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-              <input type="password" required>
-              <label for="password">Password</label>
-            </div>
-            <div class="remember-forget-pass">
-              <label><input type="checkbox">I agree to the terms & conditions</label>
-              
-            </div>
-            <button type="submit" class="submit-btn">Sign In</button>
-            <div class="login-register">
-              <p>Already have an Account?<a href="#" class="login-link">Login</a></p>
-            </div>
-          </form>
-        </div>
-    
-      </section>
-    </div>
-
-    <div class="flex-container">
-
-      <div class="form-container flex-column">
-
-        <div class="title-wrapper">
-          <h4 class="topline">Contact</h4>
-          <h1 class="title">Need Our Help? Feel Free to Contact Us.</h1>
-        </div>
-
-        <form action="#" method="GET" id="contact-form">
-          
-          <div class="form-control">
-            
-            <div class="wrapper">
-              <label for="name" id="name">
-                <input type="text" for="name" placeholder="Name *" aria-required="true" aria-invalid="false">
-              </label>
-              <i class="fa-solid fa-user text-center"></i>
-            </div>
-
-            <div class="wrapper">
-              <label for="email" id="email">
-                <input type="email" for="email" placeholder="Email *" aria-required="true" aria-invalid="false">
-              </label>
-              <i class="fa-solid fa-envelope text-center"></i>
-            </div>
-         </div>
-
-          <div class="form-control">
-            
-            <div class="wrapper">
-              <label for="phone" id="phone">
-                <input type="tel" for="phone" placeholder="Phone Number *" aria-required="true" aria-invalid="false">
-              </label>
-              <i class="fa-solid fa-phone text-center"></i>
-            </div>
-
-            <div class="wrapper">
-              <label for="subject" id="subject">
-                <input type="text" for="subject" placeholder="Subject *" aria-required="true" aria-invalid="false">
-              </label>
-              <i class="fa-solid fa-file-alt text-center"></i>
-            </div>
-
-          </div>
-
-         <div class="form-control">
-
-          <div class="wrapper message-wrapper">
-            <label for="country">
-              <div class="country-select">Country :</div>
-              <select name="country" default="select" form_id="contact-form">
-                <option value="none" selected disabled hidden>Select a Country</option>
-
-                <option value="Croatia" class="option-style">
-                  Croatia
-                </option>
-
-                <option value="Serbia" class="option-style">
-                  Serbia
-                </option>
-
-                <option value="Switzerland" class="option-style">
-                  Switzerland
-                </option>
-
-                <option value="Germany" class="option-style">
-                  Germany
-                </option>
-
-                <option value="Poland" class="option-style">
-                  Poland
-                </option>
-
-                <option value="Spain" class="option-style">
-                  Spain
-                </option>
-
-                <option value="England" class="option-style">
-                  England
-                </option>
-
-                <option value="Turkey" class="option-style">
-                  Turkey
-                </option>
-
-                <option value="Argentina" class="option-style">
-                  Argentina
-                </option>
-
-              </select>
-            </label>
-          </div>
-
-         </div>
-
-         <div class="form-control">
-
-          <div class="wrapper message-wrapper">
-            <label for="message" id="message">
-              <textarea name="message" id="message" cols="40" rows="10" class="message-box" placeholder="Message *"></textarea>
-            </label>
-            <i class="fa-solid fa-pencil-alt text-center pencil-icon"></i>
-          </div>
-
-         </div>
-
-          
-          <div>
-            <button class="submit-form" type="submit">Submit</button>
-          </div>
-
-        </form>
-      </div>
-
-      <div class="info-container grid">
-
-        <div class="flex-info-container">
-          <i class="fa-solid fa-phone info-icon"></i>
-          <div class="wrapper">
-            <h4>Phone</h4>
-            <p class="cursor">347- 885 - 250</p>
-          </div>
-        </div>
-        <div class="flex-info-container">
-          <i class="fa-solid fa-envelope info-icon"></i>
-          <div class="wrapper">
-            <h4>Email</h4>
-            <p class="cursor">envizion@gym.com</p>
-          </div>
-        </div>
-        <div class="flex-info-container">
-          <i class="fa-solid fa-location-dot info-icon"></i>
-          <div class="wrapper">
-            <h4>Location</h4>
-            <p>Brooklyn, NYC</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-
-    
-  </main>
-
-
-  <div class="google-maps-container">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12102.543420481014!2d-73.95011804917998!3d40.68199173025927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25b9a6e72cec1%3A0xbc787dffbf7d798d!2sPlanet%20Fitness!5e0!3m2!1shr!2shr!4v1704285757494!5m2!1shr!2shr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="google-maps"></iframe>
-  </div>
-
-    <!-- Footer Section -->
-
-    <footer class="footer">
-      <div class="footer-wrapper">
-
-        <div class="footer-desc">
-          <h1>En<span>Vizion</span>Gym</h1>
-          <p><a href="mailto:envizion@gym.com" class="footer-email"><i class="fa-solid fa-envelope footer-icon"></i>envizion@gym.com</a></p>
-          <p id="phone"><i class="fa-solid fa-phone footer-icon"></i><a href="tel:347- 885 - 2503">347- 885 - 2503</a></p>
-          <p><i class="fa-solid fa-location-dot footer-icon"></i>Brooklyn, New York</p>
-        </div>
-
-        <div class="footer-links">
-          <h2 class="footer-title">Contact us</h2>
-          <a href="./contact.html" class="footer-link">Contact</a>
-          <a href="./contact.html" class="footer-link">Sponsorships</a>
-        </div>
-
-        <div class="footer-links">
-          <h2 class="footer-title">Memberships</h2>
-          <a href="./membership.html" class="footer-link">Pricing</a>
-          <a href="./membership.html" class="footer-link">Plans</a>
-          <a href="./membership.html" class="footer-link">FAQ</a>
-        </div>
-
-        <div class="footer-links socials">
-          <h2 class="footer-title">Socials</h2>
-          <div>
-            <i class="fa-brands fa-instagram footer-icon"></i>
-            <a href="#" class="footer-link">Instagram</a>
-          </div>
-          <div>
-            <i class="fa-brands fa-facebook footer-icon"></i>
-            <a href="#" class="footer-link">Facebook</a>
-          </div>
-          <div>
-            <i class="fa-brands fa-tiktok footer-icon"></i>
-            <a href="#" class="footer-link">TikTok</a>
-          </div>
-          <div>
-            <i class="fa-brands fa-youtube footer-icon "></i>
-            <a href="#" class="footer-link">YouTube</a>
-          </div>
-          <div>
-            <i class="fa-brands fa-x-twitter footer-icon"></i>
-            <a href="#" class="footer-link">Twitter</a>
-          </div>
-        </div>
-
-        <div class="footer-links info">
-          <h2 class="footer-title">Informations</h2>
-          <p><a href="./footer-content/condition-of-sale.html" class="footer-link">Condition of Sales</a></p>
-          <p><a href="./footer-content/payment-security-statement.html" class="footer-link">Payment security statement</a></p>
-        </div>
-
-        <div class="footer-links payment">
-          <div>
-            <a href="https://usa.visa.com/" target="_blank"><img src="./images/visa-card.png" alt="visa-card" class="footer-img"></a>
-          </div>
-            <a href="https://www.paypal.com/" target="_blank"><img src="./images/paypal-seeklogo.com.svg" alt="visa-card" class="footer-img paypal"></a>
-            
-        </div>
-
-        <div class="footer-links payment">
-          <div>
-            <a href="https://www.mastercard.us/en-us.html" target="_blank"><img src="./images/mastercard-logo.svg"alt="visa-card" class="footer-img mastercard"></a>
-          </div>
-        </div>
-
-      </div>
-
-    </footer>
-
-
-    <div class="copyright">
-      <p>Copyright &copy; Nikola Štefančić ORS</p>
-      <a href="https://github.com/nstefan55"><i class="fa-brands fa-github cursor"></i></a>
-    </div>
-
-</body>
-
-<script src="./js/mobile-menu.js"></script>
-
-<script src="./js/user-sign-in.js"></script>
-
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-<script defer src="./js/animation.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/Flip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/Observer.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollToPlugin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/Draggable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/MotionPathPlugin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/EaselPlugin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/PixiPlugin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/TextPlugin.min.js"></script>
-
-  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/EasePack.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/CustomEase.min.js"></script>
-
-</html>
-
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="description" content="Contact Page"/>
+			<meta name="keywords" content="contact"/>
+			<meta name="author" content="Nikola Štefančić"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>EnVizion Gym | Contact</title>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+			<link rel="stylesheet" href="./styles/general.css"/>
+			<link rel="stylesheet" href="./styles/header.css"/>
+			<link rel="stylesheet" href="./styles/footer.css"/>
+			<link rel="stylesheet" href="./styles/contact.css"/>
+			<link rel="stylesheet" href="./styles/user-sign.css"/>
+			<link rel="stylesheet" href="./styles/animations.css"/>
+			<link rel="icon" type="image/x-icon" href="./logos/sparta-logo-red.png"/>
+		</head>
+		<body>
+			<!-- Header Navbar Section -->
+			<header>
+				@viewCommon.Navbar()
+			</header>
+			<main>
+				<!-- User Login || Sign In  -->
+				<div class="user-sign-flex">
+					<section class="user-sign-in-container">
+						<span class="icon-close" id="closeButton">
+							<ion-icon name="close-circle"></ion-icon>
+						</span>
+						<div class="form-box login">
+							<h2>Login</h2>
+							<form action="#" method="GET">
+								<div class="input-box">
+									<span class="icon"><ion-icon name="mail"></ion-icon></span>
+									<input type="email" required/>
+									<label for="email">Email</label>
+								</div>
+								<div class="input-box">
+									<span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+									<input type="password" required/>
+									<label for="password">Password</label>
+								</div>
+								<div class="remember-forget-pass">
+									<label><input type="checkbox"/>Remember Me</label>
+									<a href="#" class="forgot-pass">Forgot Password?</a>
+								</div>
+								<button type="submit" class="submit-btn">Login</button>
+								<div class="login-register">
+									<p>Don't have an Account?<a href="#" class="register-link">Register</a></p>
+								</div>
+							</form>
+						</div>
+						<span class="icon-close" id="closeButton">
+							<ion-icon name="close"></ion-icon>
+						</span>
+						<div class="form-box register">
+							<h2>Register</h2>
+							<form action="#" method="GET">
+								<div class="input-box">
+									<span class="icon"><ion-icon name="person"></ion-icon></span>
+									<input type="text" required/>
+									<label for="text">Username</label>
+								</div>
+								<div class="input-box">
+									<span class="icon"><ion-icon name="mail"></ion-icon></span>
+									<input type="email" required/>
+									<label for="email">Email</label>
+								</div>
+								<div class="input-box">
+									<span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+									<input type="password" required/>
+									<label for="password">Password</label>
+								</div>
+								<div class="remember-forget-pass">
+									<label><input type="checkbox"/>I agree to the terms & conditions</label>
+								</div>
+								<button type="submit" class="submit-btn">Sign In</button>
+								<div class="login-register">
+									<p>Already have an Account?<a href="#" class="login-link">Login</a></p>
+								</div>
+							</form>
+						</div>
+					</section>
+				</div>
+				<div class="flex-container">
+					<div class="form-container flex-column">
+						<div class="title-wrapper">
+							<h4 class="topline">Contact</h4>
+							<h1 class="title">Need Our Help? Feel Free to Contact Us.</h1>
+						</div>
+						<form action="#" method="GET" id="contact-form">
+							<div class="form-control">
+								<div class="wrapper">
+									<label for="name" id="name">
+										<input type="text" for="name" placeholder="Name *" aria-required="true" aria-invalid="false"/>
+									</label>
+									<i class="fa-solid fa-user text-center"></i>
+								</div>
+								<div class="wrapper">
+									<label for="email" id="email">
+										<input type="email" for="email" placeholder="Email *" aria-required="true" aria-invalid="false"/>
+									</label>
+									<i class="fa-solid fa-envelope text-center"></i>
+								</div>
+							</div>
+							<div class="form-control">
+								<div class="wrapper">
+									<label for="phone" id="phone">
+										<input type="tel" for="phone" placeholder="Phone Number *" aria-required="true" aria-invalid="false"/>
+									</label>
+									<i class="fa-solid fa-phone text-center"></i>
+								</div>
+								<div class="wrapper">
+									<label for="subject" id="subject">
+										<input type="text" for="subject" placeholder="Subject *" aria-required="true" aria-invalid="false"/>
+									</label>
+									<i class="fa-solid fa-file-alt text-center"></i>
+								</div>
+							</div>
+							<div class="form-control">
+								<div class="wrapper message-wrapper">
+									<label for="country">
+										<div class="country-select">Country :</div>
+										<select name="country" default="select" form_id="contact-form">
+											<option value="none" selected disabled hidden>Select a Country</option>
+											<option value="Croatia" class="option-style">
+												Croatia
+											</option>
+											<option value="Serbia" class="option-style">
+												Serbia
+											</option>
+											<option value="Switzerland" class="option-style">
+												Switzerland
+											</option>
+											<option value="Germany" class="option-style">
+												Germany
+											</option>
+											<option value="Poland" class="option-style">
+												Poland
+											</option>
+											<option value="Spain" class="option-style">
+												Spain
+											</option>
+											<option value="England" class="option-style">
+												England
+											</option>
+											<option value="Turkey" class="option-style">
+												Turkey
+											</option>
+											<option value="Argentina" class="option-style">
+												Argentina
+											</option>
+										</select>
+									</label>
+								</div>
+							</div>
+							<div class="form-control">
+								<div class="wrapper message-wrapper">
+									<label for="message" id="message">
+										<textarea name="message" id="message" cols="40" rows="10" class="message-box" placeholder="Message *"></textarea>
+									</label>
+									<i class="fa-solid fa-pencil-alt text-center pencil-icon"></i>
+								</div>
+							</div>
+							<div>
+								<button class="submit-form" type="submit">Submit</button>
+							</div>
+						</form>
+					</div>
+					<div class="info-container grid">
+						<div class="flex-info-container">
+							<i class="fa-solid fa-phone info-icon"></i>
+							<div class="wrapper">
+								<h4>Phone</h4>
+								<p class="cursor">347- 885 - 250</p>
+							</div>
+						</div>
+						<div class="flex-info-container">
+							<i class="fa-solid fa-envelope info-icon"></i>
+							<div class="wrapper">
+								<h4>Email</h4>
+								<p class="cursor">envizion@gym.com</p>
+							</div>
+						</div>
+						<div class="flex-info-container">
+							<i class="fa-solid fa-location-dot info-icon"></i>
+							<div class="wrapper">
+								<h4>Location</h4>
+								<p>Brooklyn, NYC</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+			<div class="google-maps-container">
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12102.543420481014!2d-73.95011804917998!3d40.68199173025927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25b9a6e72cec1%3A0xbc787dffbf7d798d!2sPlanet%20Fitness!5e0!3m2!1shr!2shr!4v1704285757494!5m2!1shr!2shr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="google-maps"></iframe>
+			</div>
+			<!-- Footer Section -->
+			<footer class="footer">
+				<div class="footer-wrapper">
+					<div class="footer-desc">
+						<h1>En<span>Vizion</span>Gym</h1>
+						<p><a href="mailto:envizion@gym.com" class="footer-email"><i class="fa-solid fa-envelope footer-icon"></i>envizion@gym.com</a></p>
+						<p id="phone"><i class="fa-solid fa-phone footer-icon"></i><a href="tel:347- 885 - 2503">347- 885 - 2503</a></p>
+						<p><i class="fa-solid fa-location-dot footer-icon"></i>Brooklyn, New York</p>
+					</div>
+					<div class="footer-links">
+						<h2 class="footer-title">Contact us</h2>
+						<a href="./contact" class="footer-link">Contact</a>
+						<a href="./contact" class="footer-link">Sponsorships</a>
+					</div>
+					<div class="footer-links">
+						<h2 class="footer-title">Memberships</h2>
+						<a href="./membership" class="footer-link">Pricing</a>
+						<a href="./membership" class="footer-link">Plans</a>
+						<a href="./membership" class="footer-link">FAQ</a>
+					</div>
+					<div class="footer-links socials">
+						<h2 class="footer-title">Socials</h2>
+						<div>
+							<i class="fa-brands fa-instagram footer-icon"></i>
+							<a href="#" class="footer-link">Instagram</a>
+						</div>
+						<div>
+							<i class="fa-brands fa-facebook footer-icon"></i>
+							<a href="#" class="footer-link">Facebook</a>
+						</div>
+						<div>
+							<i class="fa-brands fa-tiktok footer-icon"></i>
+							<a href="#" class="footer-link">TikTok</a>
+						</div>
+						<div>
+							<i class="fa-brands fa-youtube footer-icon "></i>
+							<a href="#" class="footer-link">YouTube</a>
+						</div>
+						<div>
+							<i class="fa-brands fa-x-twitter footer-icon"></i>
+							<a href="#" class="footer-link">Twitter</a>
+						</div>
+					</div>
+					<div class="footer-links info">
+						<h2 class="footer-title">Informations</h2>
+						<p><a href="./footer-content/condition-of-sale" class="footer-link">Condition of Sales</a></p>
+						<p><a href="./footer-content/payment-security-statement" class="footer-link">Payment security statement</a></p>
+					</div>
+					<div class="footer-links payment">
+						<div>
+							<a href="https://usa.visa.com/" target="_blank"><img src="./images/visa-card.png" alt="visa-card" class="footer-img"/></a>
+						</div>
+						<a href="https://www.paypal.com/" target="_blank"><img src="./images/paypal-seeklogo.com.svg" alt="visa-card" class="footer-img paypal"/></a>
+					</div>
+					<div class="footer-links payment">
+						<div>
+							<a href="https://www.mastercard.us/en-us" target="_blank"><img src="./images/mastercard-logo.svg" alt="visa-card" class="footer-img mastercard"/></a>
+						</div>
+					</div>
+				</div>
+			</footer>
+			<div class="copyright">
+				<p>Copyright &copy; Nikola Štefančić ORS</p>
+				<a href="https://github.com/nstefan55"><i class="fa-brands fa-github cursor"></i></a>
+			</div>
+		</body>
+		<script src="./js/mobile-menu.js"></script>
+		<script src="./js/user-sign-in.js"></script>
+		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+		<script defer src="./js/animation.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/Flip.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/Observer.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollToPlugin.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/Draggable.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/MotionPathPlugin.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/EaselPlugin.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/PixiPlugin.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/TextPlugin.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/EasePack.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/CustomEase.min.js"></script>
+	</html>
 }
