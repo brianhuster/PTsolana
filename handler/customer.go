@@ -1,7 +1,7 @@
 package handler
 
 import (
-	viewCommon "github.com/datamonsterr/PTSolana/view/common"
+	viewCommon "github.com/datamonsterr/PTsolana/view/common"
 	"github.com/labstack/echo/v4"
 )
 

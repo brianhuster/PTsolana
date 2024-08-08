@@ -1,11 +1,37 @@
-package viewCommon 
-
-script ClickAvt() {
-	let profileMenu = document.getElementById("profileMenu");
-	console.log("Clicked");
-	profileMenu.classList.toggle("hidden");
-}
+package viewCommon
 
 templ Navbar() {
-	<nav class="w-full bg-primary pt-5 pb-3 px-16 text-xl text-foreground flex justify-between fixed top-0 left-0 min-h-2.5"></nav>
+	<nav class="navbar">
+      <a href="index.html"><h1 class="logo-animate">En<span>Vizion</span> Gym</h1></a>
+
+      <div class="navbar-toggle" id="mobile-menu">
+
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+
+      </div>
+
+      <div class="navbar-menu navbar-animate">
+
+        <a href="index.html" class="navbar-link">Home</a>
+        <a href="news.html" class="navbar-link">News</a>
+        <a href="services.html" class="navbar-link">Services</a>
+        <a href="group-programs.html" class="navbar-link ">Group Programs</a>
+        <a href="membership.html" class="navbar-link ">Memberships</a>
+        <a href="about-us.html" class="navbar-link">About Us</a>
+        <a href="contact.html" class="navbar-link">Contact</a>
+
+
+        <button class="login-btn">
+          Login
+          <div class="tooltip">
+            <p class="margin">Don't Have an Account?</p>
+            <p>You can Sign Up</p>
+          </div>
+        </button>
+
+      </div>
+
+    </nav>
 }

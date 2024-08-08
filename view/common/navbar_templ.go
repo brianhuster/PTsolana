@@ -8,18 +8,6 @@ package viewCommon
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func ClickAvt() templ.ComponentScript {
-	return templ.ComponentScript{
-		Name: `__templ_ClickAvt_f79b`,
-		Function: `function __templ_ClickAvt_f79b(){let profileMenu = document.getElementById("profileMenu");
-	console.log("Clicked");
-	profileMenu.classList.toggle("hidden");
-}`,
-		Call:       templ.SafeScript(`__templ_ClickAvt_f79b`),
-		CallInline: templ.SafeScriptInline(`__templ_ClickAvt_f79b`),
-	}
-}
-
 func Navbar() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -38,7 +26,7 @@ func Navbar() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"w-full bg-primary pt-5 pb-3 px-16 text-xl text-foreground flex justify-between fixed top-0 left-0 min-h-2.5\"></nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"navbar\"><a href=\"index.html\"><h1 class=\"logo-animate\">En<span>Vizion</span> Gym</h1></a><div class=\"navbar-toggle\" id=\"mobile-menu\"><span class=\"bar\"></span> <span class=\"bar\"></span> <span class=\"bar\"></span></div><div class=\"navbar-menu navbar-animate\"><a href=\"index.html\" class=\"navbar-link\">Home</a> <a href=\"news.html\" class=\"navbar-link\">News</a> <a href=\"services.html\" class=\"navbar-link\">Services</a> <a href=\"group-programs.html\" class=\"navbar-link \">Group Programs</a> <a href=\"membership.html\" class=\"navbar-link \">Memberships</a> <a href=\"about-us.html\" class=\"navbar-link\">About Us</a> <a href=\"contact.html\" class=\"navbar-link\">Contact</a> <button class=\"login-btn\">Login<div class=\"tooltip\"><p class=\"margin\">Don't Have an Account?</p><p>You can Sign Up</p></div></button></div></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,9 +1,10 @@
-module github.com/datamonsterr/PTSolana
+module github.com/datamonsterr/PTsolana
 
 go 1.21.6
 
 require (
 	github.com/a-h/templ v0.2.747
+	github.com/datamonsterr/PTsolana v0.0.0-20240806104126-3cba905a5de5
 	github.com/labstack/echo/v4 v4.12.0
 )
 
