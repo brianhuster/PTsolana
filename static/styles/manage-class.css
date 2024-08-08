@@ -1,0 +1,25 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+.navbar, .footer {
+    background-color: #1f1f1f;
+}
+.card {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+}
+.card img {
+    max-height: 150px;
+    object-fit: cover;
+}
+.btn-custom {
+    background-color: #f39c12;
+    border: none;
+}
+.btn-custom:hover {
+    background-color: #e67e22;
+}
+.hidden {
+    display: none;
+}

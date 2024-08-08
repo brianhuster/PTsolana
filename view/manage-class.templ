@@ -17,33 +17,7 @@ templ ManageClass() {
     <link rel="stylesheet" href="./styles/user-sign.css">
     <link rel="stylesheet" href="./styles/animations.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        .navbar, .footer {
-            background-color: #1f1f1f;
-        }
-        .card {
-            background-color: #1f1f1f;
-            border: 1px solid #333;
-        }
-        .card img {
-            max-height: 150px;
-            object-fit: cover;
-        }
-        .btn-custom {
-            background-color: #f39c12;
-            border: none;
-        }
-        .btn-custom:hover {
-            background-color: #e67e22;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="./styles/manage-class.css">
 </head>
 <body>
 
@@ -139,18 +113,8 @@ templ ManageClass() {
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- HTMX JS -->
-    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
-    <!-- Custom JS to toggle form visibility -->
-    <script>
-        function toggleCreateForm() {
-            var form = document.getElementById('create-class-form');
-            if (form.classList.contains('hidden')) {
-                form.classList.remove('hidden');
-            } else {
-                form.classList.add('hidden');
-            }
-        }
-    </script>
+    <script src="htmx/htmx.min.js"></script>
+    <script src="js/manage-class.js"></script>
 </body>
 </html>
 }
