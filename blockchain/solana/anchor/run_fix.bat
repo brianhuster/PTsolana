@@ -1,1 +1,0 @@
-call python auto_fix_anchor.py

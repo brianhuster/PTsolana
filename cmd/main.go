@@ -17,11 +17,10 @@ func main() {
 	}))
 
 	e.GET("/", handler.GetIndex)
-	e.GET("/index.html", handler.GetIndex)
-	e.GET("/about-us.html", handler.GetAboutUs)
-	e.GET("/contact.html", handler.GetContact)
-	e.GET("/services.html", handler.GetServices)
-	e.GET("/manage-class.html", handler.GetManageClass)
+	e.GET("/about-us", handler.GetAboutUs)
+	e.GET("/contact", handler.GetContact)
+	e.GET("/services", handler.GetServices)
+	e.GET("/manage-class", handler.GetManageClass)
 
 	e.Static("/", "static")
 	log.Fatal(e.Start(":8080"))
