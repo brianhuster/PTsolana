@@ -3,6 +3,7 @@
 import GymClassItem from "@/components/custom/gym-class-item";
 import { GymClass, GymData } from "@/lib/models";
 import { useEffect, useState } from "react";
+import { getJSON } from "@/lib/utils";
 
 export default function Home() {
     const [gymClasses, setGymClasses] = useState<GymData[]>([]);
@@ -10,10 +11,7 @@ export default function Home() {
     useEffect(() => {
         // Fetch data from an external API
         const fetchData = async () => {
-            const res = await fetch(
-                "http://localhost:8000/get-all-gym-classes-data"
-            );
-            const json = await res.json();
+            const json = await getJSON("http://localhost:8000/get-all-gym-classes-data");
             setGymClasses(json.data);
         };
 

@@ -1,15 +1,13 @@
 "use client";
 import { GymData } from "@/lib/models";
 import { useEffect, useState } from "react";
+import { getJSON } from "@/lib/utils";
 
 export default function Page({ params }: { params: { gymClassId: string } }) {
     const [gymClass, setGymClass] = useState<GymData>();
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(
-                `http://localhost:8000/get-gym-class-data?public_key=${params.gymClassId}`
-            );
-            const json = await res.json();
+            const json = await getJSON(`http://localhost:8000/get-gym-class-data?public_key=${params.gymClassId}`);
             setGymClass(json.data);
         };
         fetchData();
