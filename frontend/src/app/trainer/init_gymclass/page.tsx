@@ -14,8 +14,8 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-declare const window: WindowWithSolana;
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Connection } from "@solana/web3.js";
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -45,14 +45,14 @@ export default function TrainerForm() {
         },
     });
 
+
+    const { connection }: { connection: Connection } = useConnection();
+    const { publicKey } = useWallet();
+
     async function onsubmit(values: z.infer<typeof formSchema>) {
-        const { solana } = window;
-        if (solana?.publicKey === null) {
-            alert("Please connect your wallet first.");
-            return;
-        }
+
         const res = await fetch(
-            `http://localhost:8000/init-gymclass?trainerPubkey=${solana?.publicKey.toString()}`,
+            `http://localhost:8000/init-gymclass?trainerPubkey=${publicKey}`,
             {
                 method: "post",
                 headers: {
@@ -62,8 +62,9 @@ export default function TrainerForm() {
             }
         );
         const json = await res.json();
-        const transaction = await json.transaction;
-        const solana_resp = await solana?.signTransaction(transaction);
+        const transaction: Uint8Array = await new Uint8Array(json.transaction);
+
+        await connection.sendRawTransaction(transaction)
     }
 
     return (

@@ -11,27 +11,33 @@ import {
     NavigationMenuList,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import ConnectWallet from "@/components/custom/connect-wallet";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 export function Navbar() {
     return (
-        <NavigationMenu className={cn("px-10 bg-transparent")}>
+        <NavigationMenu className="px-10 bg-transparent">
             <NavigationMenuList>
-                <NavigationMenuItem>
-                    <Link href="/" legacyBehavior passHref>
-                        <NavigationMenuLink
-                            className={cn(
-                                navigationMenuTriggerStyle(),
-                                " text-2xl rounded-none py-8 bg-inherit"
-                            )}
-                        >
-                            Home
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <ConnectWallet />
-                </NavigationMenuItem>
+                <div className="w-screen px-20 py-5 flex justify-between">
+
+                    <NavigationMenuItem>
+                        <Link href="/" legacyBehavior passHref>
+                            <NavigationMenuLink
+                                className={cn(
+                                    navigationMenuTriggerStyle(),
+                                    " text-2xl rounded-none py-8 bg-inherit"
+                                )}
+                            >
+                                Home
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <WalletMultiButton style={{
+                            backgroundColor: "white",
+                            color: "black"
+                        }} />
+                    </NavigationMenuItem>
+                </div>
             </NavigationMenuList>
         </NavigationMenu>
     );

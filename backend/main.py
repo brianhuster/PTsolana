@@ -354,8 +354,10 @@ async def get_trainer_account_data(public_key: str):
             try:
                 account_data = client.get_account_data(accounts[i].pubkey, UserData, [8, 0])
                 if account_data.get("flag") == 5 or account_data.get("flag") == 6:
-                    if account_data.get("owner") == PublicKey(public_key):
+                    if account_data.get("owner") == public_key:
                         account_data = normalize_user_data(account_data, "trainer")
+                    else:
+                        account_data = "no account found"
             except Exception as e:
                 print(e)
         return account_data
@@ -430,9 +432,29 @@ async def get_gym_class_info(public_key: str):
 async def get_balance(public_key: str):
     return make_response_auto_catch(client.get_balance(public_key))
 
-@app.post("/airdrop")
-async def airdrop(public_key: str, amount: int = 1):
-    return make_response_auto_catch(client.drop_sol(public_key, amount))
+@BaseInstructionDataClass(name="trainer_hide_gymclass")
+class TrainerHideGymclassInstruction:
+    pass
+
+@app.get("/trainer-hide-gymclass")
+async def trainer_hide_gym_class(
+    trainerPubkey: str,
+    gymclassPubkey: str
+):
+    def fun():
+        instruction_data = TrainerHideGymclassInstruction()
+
+        transaction = client.create_transaction(
+            instruction_data = instruction_data,
+            pubkeys=[
+                PublicKey(trainerPubkey),
+                PublicKey(gymclassPubkey)
+            ],
+            is_signers=[True, False]
+        )
+
+        return {"transaction": transaction}
+    return make_response_auto_catch(fun)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)

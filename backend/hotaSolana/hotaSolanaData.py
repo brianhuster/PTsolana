@@ -1,6 +1,5 @@
 from solathon.core.instructions import transfer, create_account, Instruction, AccountMeta 
 from solathon import Client, Transaction, PublicKey, Keypair 
-from solana.transaction import Transaction as SolTransaction
 import random
 from hotaSolana.hotaSolanaDataBase import *
 from hotaSolana.hotaSolanaMeathod import *

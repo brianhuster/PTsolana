@@ -16,7 +16,7 @@ export default function Page() {
                         variant="destructive"
                         className="px-10 py-10 text-3xl"
                     >
-                        I am Trainer{" "}
+                        I am Trainer
                     </Button>
                 </a>
                 <a href="/home">

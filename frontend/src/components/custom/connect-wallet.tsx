@@ -21,7 +21,7 @@ export default function ConnectWallet() {
                     response.publicKey.toString()
                 );
             } else {
-                alert("Solana object not found! Get a Phantom Wallet 👻");
+                alert("Solana object not found! Click 'Connect to Phantom Wallet' to connect to your Phantom 👻 wallet!");
             }
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ export default function ConnectWallet() {
 
     const connectWallet = async () => {
         try {
-            const { solana } = window;
+            const { solana } = window as any;
             if (solana?.isPhantom) {
                 const response = await solana.connect();
                 setWalletAddress(response.publicKey.toString());
@@ -67,3 +67,24 @@ export default function ConnectWallet() {
         </div>
     );
 }
+
+export const checkIfWalletIsConnected = async () => {
+    try {
+        const { solana } = window;
+        if (solana && solana.isPhantom) {
+            console.log("Phantom wallet found!");
+
+            // Automatically connect if already authorized
+            const response = await solana.connect({ onlyIfTrusted: true });
+            setWalletAddress(response.publicKey.toString());
+            console.log(
+                "Connected with Public Key:",
+                response.publicKey.toString()
+            );
+        } else {
+            alert("Solana object not found! Click 'Connect to Phantom Wallet' to connect to your Phantom 👻 wallet!");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
