@@ -224,22 +224,23 @@ pub fn customer_confirm_done_handler<'info>(
     }
 
     if !(gymclass.borrow().flag <= 4) {
-        panic!("this is not a gymclass");
+        panic!("this is not a gymclass or be hidden");
     }
 
-    if !(gymclass.borrow().flag == 1) {
+    if !(gymclass.borrow().flag == 2) {
         panic!("PT not confirm yet");
     }
 
-    assign!(gymclass.borrow_mut().flag, 2);
+    assign!(gymclass.borrow_mut().flag, 3);
 
-    let mut pt_money = (gymclass.borrow().price / 100) * 70;
-    let mut customer_reward = (gymclass.borrow().price / 100) * 20;
+    let mut trainer_money = (gymclass.borrow().price / 100) * 70;
+    let mut customer_money = (gymclass.borrow().price / 100) * 20;
+    let mut company_money = (gymclass.borrow().price - trainer_money) - customer_money;
 
     assign!(gymclass.borrow_mut().review_array, Mutable::<[u8; 128]>::new(review_array));
 
     {
-        let amount = pt_money.clone();
+        let amount = trainer_money.clone();
 
         **gymclass
             .borrow()
@@ -256,7 +257,7 @@ pub fn customer_confirm_done_handler<'info>(
     };
 
     {
-        let amount = customer_reward.clone();
+        let amount = customer_money.clone();
 
         **gymclass
             .borrow()
@@ -273,7 +274,7 @@ pub fn customer_confirm_done_handler<'info>(
     };
 
     {
-        let amount = ((gymclass.borrow().price - pt_money) - customer_reward);
+        let amount = company_money.clone();
 
         **gymclass
             .borrow()
@@ -298,8 +299,8 @@ pub fn customer_join_gymclass_handler<'info>(
         panic!("gymclass already have customer!");
     }
 
-    if !(gymclass.borrow().flag < 2) {
-        panic!("gymclass already done!");
+    if !(gymclass.borrow().flag == 0) {
+        panic!("gymclass is not available!");
     }
 
     assign!(gymclass.borrow_mut().customer, customer.key());
@@ -321,21 +322,6 @@ pub fn customer_join_gymclass_handler<'info>(
     .unwrap();
 }
 
-pub fn hide_trainer_account_handler<'info>(
-    mut trainer: SeahorseSigner<'info, '_>,
-    mut user: Mutable<LoadedUser<'info, '_>>,
-) -> () {
-    if !(trainer.key() == user.borrow().owner) {
-        panic!("you are not allowed to hide this account");
-    }
-
-    if !(user.borrow().flag == 5) {
-        panic!("This is not a trainer account or already hidden");
-    }
-
-    assign!(user.borrow_mut().flag, 6);
-}
-
 pub fn init_customer_account_handler<'info>(
     mut customer: SeahorseSigner<'info, '_>,
     mut user: Empty<Mutable<LoadedUser<'info, '_>>>,
@@ -352,6 +338,8 @@ pub fn init_customer_account_handler<'info>(
 
     assign!(user.borrow_mut().owner, customer.key());
 
+    assign!(user.borrow_mut().flag, 6);
+
     assign!(user.borrow_mut().phone_array, Mutable::<[u8; 10]>::new(phone_array));
 
     assign!(user.borrow_mut().name_array, Mutable::<[u8; 32]>::new(name_array));
@@ -367,8 +355,6 @@ pub fn init_customer_account_handler<'info>(
     assign!(user.borrow_mut().gender, gender);
 
     assign!(user.borrow_mut().seed_random, seed_random);
-
-    assign!(user.borrow_mut().flag, 7);
 }
 
 pub fn init_gymclass_handler<'info>(
@@ -451,6 +437,21 @@ pub fn init_trainer_account_handler<'info>(
     assign!(user.borrow_mut().gender, gender);
 }
 
+pub fn pt_accept_customer<'info>(
+    mut trainer: SeahorseSigner<'info, '_>,
+    mut gymclass: Mutable<LoadedGymClass<'info, '_>>,
+) -> () {
+    if !(trainer.key() == gymclass.borrow().trainer) {
+        panic!("gymclass trainer not same!");
+    }
+
+    if !(gymclass.borrow().flag == 1) {
+        panic!("accept only when customer exist!");
+    }
+
+    assign!(gymclass.borrow_mut().flag, 4);
+}
+
 pub fn pt_confirm_done_handler<'info>(
     mut trainer: SeahorseSigner<'info, '_>,
     mut gymclass: Mutable<LoadedGymClass<'info, '_>>,
@@ -459,11 +460,11 @@ pub fn pt_confirm_done_handler<'info>(
         panic!("gymclass trainer not");
     }
 
-    if !(gymclass.borrow().flag == 0) {
+    if !(gymclass.borrow().flag == 4) {
         panic!("customer cannot confirm before PT");
     }
 
-    assign!(gymclass.borrow_mut().flag, 1);
+    assign!(gymclass.borrow_mut().flag, 2);
 }
 
 pub fn pt_decline_customer_handler<'info>(
@@ -512,7 +513,7 @@ pub fn trainer_hide_gymclass_handler<'info>(
         panic!("you are not trainer");
     }
 
-    assign!(gymclass.borrow_mut().flag, 4);
+    assign!(gymclass.borrow_mut().flag, 7);
 }
 
 pub fn update_customer_account_handler<'info>(
@@ -566,8 +567,8 @@ pub fn update_trainer_account_handler<'info>(
     mut location_array: [u8; 64],
     mut info_array: [u8; 256],
 ) -> () {
-    if !((user.borrow().flag == 5) || (user.borrow().flag == 6)) {
-        panic!("This is not a trainer account");
+    if !(user.borrow().flag == 5) {
+        panic!("This is not an active trainer account");
     }
 
     if !(trainer.key() == user.borrow().owner) {
@@ -583,4 +584,15 @@ pub fn update_trainer_account_handler<'info>(
     assign!(user.borrow_mut().location_array, Mutable::<[u8; 64]>::new(location_array));
 
     assign!(user.borrow_mut().info_array, Mutable::<[u8; 256]>::new(info_array));
+}
+
+pub fn user_hide_account_handler<'info>(
+    mut user: SeahorseSigner<'info, '_>,
+    mut user_data: Mutable<LoadedUser<'info, '_>>,
+) -> () {
+    if !(user.key() == user_data.borrow().owner) {
+        panic!("you are not allowed to hide this account");
+    }
+
+    assign!(user_data.borrow_mut().flag, 7);
 }

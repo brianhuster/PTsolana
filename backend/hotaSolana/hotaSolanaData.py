@@ -1,5 +1,6 @@
-from solathon.core.instructions import transfer, create_account, Instruction, AccountMeta
-from solathon import Client, Transaction, PublicKey, Keypair
+from solathon.core.instructions import transfer, create_account, Instruction, AccountMeta 
+from solathon import Client, Transaction, PublicKey, Keypair 
+from solana.transaction import Transaction as SolTransaction
 import random
 from hotaSolana.hotaSolanaDataBase import *
 from hotaSolana.hotaSolanaMeathod import *
@@ -65,8 +66,6 @@ class HotaSolanaRPC:
             data=bytes(instruction_data.serialize()),
         )
 
-        print("Instruction data len: ", len(instruction_data.serialize()))
-
         transaction = Transaction(
             instructions=[
                 instruction
@@ -77,6 +76,30 @@ class HotaSolanaRPC:
         signature = self.connection.send_transaction(transaction)
         print(f"Transaction sent with signature {signature}")
         return signature
+    
+    def create_transaction(self, instruction_data: BaseStruct, pubkeys=[] , is_signers=[],  fee_payer: PublicKey = None):
+        if len(pubkeys) != len(is_signers):
+            raise Exception("Length of pubkeys and signers must be equal")
+
+        keys = [
+            AccountMeta(public_key=pubkeys[i], is_signer=is_signers[i], is_writable=True)
+            for i in range(len(pubkeys))
+        ]
+
+        instruction = Instruction(
+            keys=keys,
+            program_id=self.program_id,
+            data=bytes(instruction_data.serialize()),
+        )
+        transaction = Transaction(
+            instructions=[
+                instruction
+            ],
+            signers=[pubkeys[i] for i in range(len(pubkeys)) if is_signers[i]], fee_payer=fee_payer,
+            recent_blockhash=self.connection.get_recent_blockhash().blockhash
+        )
+
+        return transaction.compile_transaction().hex()
     
     def get_balance(self, public_key: PublicKey):
         balance = self.connection.get_balance(public_key)

@@ -4,8 +4,9 @@
 from seahorse.prelude import *
 
 declare_id('4Bprhf44eKn2hm8WiHZZnbHbvUjeb9NKmrseBtYKY8te')
+
 class User(Account):
-    flag: u8 # 5: Active Trainer 6: Hidden Trainer 7: Customer
+    flag: u8 # 5: Active Trainer 6: Active Customer 7: Hidden
     owner: Pubkey # 32 byte
     phone_u8_10_array: Array[u8, 10] # 5 characters max = 5 bytes
     name_u8_32_array: Array[u8, 32] # 32 characters max = 32 bytes
@@ -17,7 +18,7 @@ class User(Account):
     seed_random: u64 # 8 bytes
 
 class GymClass(Account):
-    flag: u8 # 0: Available 1: Unavailable 2: PT Confirmed, 3: Customer Reviewed, 4: Hidden
+    flag: u8 # 0: Available 1: Unavailable 2: PT Confirmed, 3: Customer Reviewed, 4: PT accept  7: Hidden
     company: Pubkey # 32 bytes # Program
     customer: Pubkey # 32 bytes # User
     trainer: Pubkey # 32 bytes # PT
@@ -56,7 +57,7 @@ def customer_join_gymclass(
     gymclass: GymClass
 ):
     assert gymclass.key() == gymclass.customer, "gymclass already have customer!"
-    assert gymclass.flag < 2, "gymclass already done!"
+    assert gymclass.flag == 0, "gymclass is not available!"
 
     gymclass.customer = customer.key()
     gymclass.flag = 1 # Unavailable
@@ -70,9 +71,19 @@ def pt_decline_customer(
 ):
     assert trainer.key() == gymclass.trainer, "gymclass trainer not same!"
     assert customer.key() == gymclass.customer, "Customer is not in gymclass!"
+
     gymclass.flag = 0
     gymclass.customer = gymclass.key()
     gymclass.transfer_lamports(customer, gymclass.price)   
+
+def pt_accept_customer(
+    trainer: Signer,
+    gymclass: GymClass
+):
+    assert trainer.key() == gymclass.trainer, "gymclass trainer not same!"
+    assert gymclass.flag == 1, "accept only when customer exist!"
+
+    gymclass.flag = 4 # PT accept
 
 @instruction
 def update_gymclass(
@@ -94,8 +105,9 @@ def pt_confirm_done(
     gymclass: GymClass
 ):
     assert trainer.key() == gymclass.trainer, "gymclass trainer not"
-    assert gymclass.flag == 0, "customer cannot confirm before PT"
-    gymclass.flag = 1
+    assert gymclass.flag == 4, "customer cannot confirm before PT"
+
+    gymclass.flag = 2
     
 @instruction
 def customer_confirm_done(
@@ -106,16 +118,17 @@ def customer_confirm_done(
     review_u8_128_array: Array[u8, 128]
 ):
     assert customer.key() == gymclass.customer, "gymclass student not match"
-    assert gymclass.flag <= 4, "this is not a gymclass"
-    assert gymclass.flag == 1, "PT not confirm yet"
+    assert gymclass.flag <= 4, "this is not a gymclass or be hidden"
+    assert gymclass.flag == 2, "PT not confirm yet"
 
-    gymclass.flag = 2
-    pt_money = gymclass.price // 100 * 70 
-    customer_reward = gymclass.price // 100 * 20
+    gymclass.flag = 3
+    trainer_money = gymclass.price // 100 * 70 
+    customer_money = gymclass.price // 100 * 20
+    company_money = gymclass.price - trainer_money - customer_money
     gymclass.review_u8_128_array = review_u8_128_array
-    gymclass.transfer_lamports(customer, pt_money)
-    gymclass.transfer_lamports(trainer, customer_reward)
-    gymclass.transfer_lamports(company, gymclass.price - pt_money - customer_reward)
+    gymclass.transfer_lamports(customer, trainer_money)
+    gymclass.transfer_lamports(trainer, customer_money)
+    gymclass.transfer_lamports(company, company_money)
 
 @instruction
 def trainer_hide_gymclass(
@@ -123,7 +136,15 @@ def trainer_hide_gymclass(
     gymclass: GymClass
 ):
     assert trainer.key() == gymclass.trainer, "you are not trainer"
-    gymclass.flag = 4
+    gymclass.flag = 7
+
+@instruction
+def user_hide_account(
+    user: Signer,
+    user_data: User
+):
+    assert user.key() == user_data.owner, "you are not allowed to hide this account"
+    user_data.flag = 7
 
 @instruction
 def init_trainer_account(
@@ -161,7 +182,7 @@ def update_trainer_account(
     location_u8_64_array: Array[u8, 64],
     info_u8_256_array: Array[u8, 256],
 ):
-    assert user.flag == 5 or user.flag == 6, "This is not a trainer account"
+    assert user.flag == 5, "This is not an active trainer account"
     assert trainer.key() == user.owner, "you are not allowed to update this account"
 
     user.phone_u8_10_array = phone_u8_10_array
@@ -169,16 +190,6 @@ def update_trainer_account(
     user.email_u8_64_array = email_u8_64_array
     user.location_u8_64_array = location_u8_64_array
     user.info_u8_256_array = info_u8_256_array
-
-@instruction
-def hide_trainer_account(
-    trainer: Signer,
-    user: User
-):
-    assert trainer.key() == user.owner, "you are not allowed to hide this account"
-    assert user.flag == 5, "This is not a trainer account or already hidden"
-
-    user.flag = 6
 
 @instruction
 def init_customer_account(
@@ -195,6 +206,7 @@ def init_customer_account(
 ):
     user = user.init(payer = customer, seeds = [customer, "customer", seed_random])
     user.owner = customer.key()
+    user.flag = 6
     user.phone_u8_10_array = phone_u8_10_array
     user.name_u8_32_array = name_u8_32_array
     user.email_u8_64_array = email_u8_64_array
@@ -203,7 +215,6 @@ def init_customer_account(
     user.age = age
     user.gender = gender
     user.seed_random = seed_random
-    user.flag = 7
     
 
 @instruction
@@ -217,6 +228,7 @@ def update_customer_account(
     info_u8_256_array: Array[u8, 256],
 ):
     assert customer.key() == user.owner , "you are not allowed to update this account"
+
     user.phone_u8_10_array = phone_u8_10_array
     user.name_u8_32_array = name_u8_32_array
     user.email_u8_64_array = email_u8_64_array

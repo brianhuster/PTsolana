@@ -6,6 +6,7 @@ fastapi
 uvicorn[standard]
 gunicorn
 requests
+solana
 
 # Install solathon dependencies
 anyio==4.1.0

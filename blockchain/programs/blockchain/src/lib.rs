@@ -250,31 +250,6 @@ mod blockchain {
     }
 
     #[derive(Accounts)]
-    pub struct HideTrainerAccount<'info> {
-        #[account(mut)]
-        pub trainer: Signer<'info>,
-        #[account(mut)]
-        pub user: Box<Account<'info, dot::program::User>>,
-    }
-
-    pub fn hide_trainer_account(ctx: Context<HideTrainerAccount>) -> Result<()> {
-        let mut programs = HashMap::new();
-        let programs_map = ProgramsMap(programs);
-        let trainer = SeahorseSigner {
-            account: &ctx.accounts.trainer,
-            programs: &programs_map,
-        };
-
-        let user = dot::program::User::load(&mut ctx.accounts.user, &programs_map);
-
-        hide_trainer_account_handler(trainer.clone(), user.clone());
-
-        dot::program::User::store(user);
-
-        return Ok(());
-    }
-
-    #[derive(Accounts)]
     # [instruction (phone_array: [u8; 10] , name_array: [u8; 32] , email_array: [u8; 64] , location_array: [u8; 64] , info_array: [u8; 256] , age : u8 , gender : u8 , seed_random : u64)]
     pub struct InitCustomerAccount<'info> {
         #[account(mut)]
@@ -645,6 +620,31 @@ mod blockchain {
         );
 
         dot::program::User::store(user);
+
+        return Ok(());
+    }
+
+    #[derive(Accounts)]
+    pub struct UserHideAccount<'info> {
+        #[account(mut)]
+        pub user: Signer<'info>,
+        #[account(mut)]
+        pub user_data: Box<Account<'info, dot::program::User>>,
+    }
+
+    pub fn user_hide_account(ctx: Context<UserHideAccount>) -> Result<()> {
+        let mut programs = HashMap::new();
+        let programs_map = ProgramsMap(programs);
+        let user = SeahorseSigner {
+            account: &ctx.accounts.user,
+            programs: &programs_map,
+        };
+
+        let user_data = dot::program::User::load(&mut ctx.accounts.user_data, &programs_map);
+
+        user_hide_account_handler(user.clone(), user_data.clone());
+
+        dot::program::User::store(user_data);
 
         return Ok(());
     }

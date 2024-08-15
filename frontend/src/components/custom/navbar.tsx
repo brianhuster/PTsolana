@@ -11,6 +11,7 @@ import {
     NavigationMenuList,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import ConnectWallet from "@/components/custom/connect-wallet";
 
 export function Navbar() {
     return (
@@ -27,6 +28,9 @@ export function Navbar() {
                             Home
                         </NavigationMenuLink>
                     </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <ConnectWallet />
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>

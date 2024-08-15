@@ -126,44 +126,53 @@ def getPubkeyFromSeed(owner: PublicKey, secret_key: str, seed_random: int):
         bytes(HotaUint64(seed_random).serialize()),
     ), client.program_id)
 
+def normalize_gym_class_data(account_data: dict):
+    account_data["gym_class_public_key"] = str(getPubkeyFromSeed(PublicKey(account_data.get("company")), "gymclass", account_data.get("seed_sha256")))
+    account_data["price"] = account_data.get("price") / LAMPORTS_PER_SOL
+    account_data.pop("seed_sha256")
+    return account_data
+
+def normalize_user_data(account_data: dict, secret_key: str):
+    account_data["user_account_public_key"] = str(getPubkeyFromSeed(PublicKey(account_data.get("owner")), secret_key, account_data.get("seed_random")))
+    if account_data.get("gender") == 0:
+        account_data["gender"] = "male"
+    elif account_data.get("gender") == 1:
+        account_data["gender"] = "female"
+    else:
+        account_data["gender"] = "other"
+    account_data.pop("seed_random")
+    return account_data
+
 @app.post("/init-gymclass")
 async def init_gym_class(
-    trainerPrivateKey: str,
+    trainerPubkey: str,
     initGymClassModel: InitGymClassModel,
 ):
-    def fun():
-        company_keypair = makeKeyPair(OWNER_PRIVATE_KEY)
+    company_pubkey = makePublicKey(OWNER_PUBLIC_KEY)
 
-        instruction_data = GymClassInitInstruction()
-        instruction_data.get("name").object2struct(initGymClassModel.name)
-        instruction_data.get("info").object2struct(initGymClassModel.info)
-        instruction_data.get("price").object2struct(initGymClassModel.price)
-        instruction_data.get("seed_sha256").random()
+    instruction_data = GymClassInitInstruction()
+    instruction_data.get("name").object2struct(initGymClassModel.name)
+    instruction_data.get("info").object2struct(initGymClassModel.info)
+    instruction_data.get("price").object2struct(initGymClassModel.price)
+    instruction_data.get("seed_sha256").random()
 
-        gym_class_pubkey = getPubkeyFromSeed(company_keypair.public_key, "gymclass", int(instruction_data.get("seed_sha256").value()))        
-        print(gym_class_pubkey)
+    gym_class_pubkey = getPubkeyFromSeed(company_pubkey, "gymclass", int(instruction_data.get("seed_sha256").value()))        
+    print(gym_class_pubkey)
 
-        instruction_address = client.send_transaction(
-            instruction_data=instruction_data,
-            pubkeys=[
-                company_keypair.public_key,
-                makeKeyPair(trainerPrivateKey).public_key,
-                gym_class_pubkey,
-                makePublicKey(sysvar_rent),
-                makePublicKey(system_program),
-            ],
-            keypairs=[
-                company_keypair,
-                makeKeyPair(trainerPrivateKey),
-            ],
-            fee_payer=company_keypair.public_key
-        )
+    raw_transaction_data = client.create_transaction(
+        instruction_data=instruction_data,
+        pubkeys=[
+            company_pubkey,
+            makePublicKey(trainerPubkey),
+            gym_class_pubkey,
+            makePublicKey(sysvar_rent),
+            makePublicKey(system_program),
+        ],
+        is_signers = [True, True, False, False, False],
+        fee_payer=company_pubkey
+    )
 
-        return {
-            "instruction_address": instruction_address,
-            "gym_class_public_key": bs58.encode(gym_class_pubkey.byte_value),
-        }
-    return make_response_auto_catch(fun)
+    return {"transaction": raw_transaction_data}
 
 @app.post("/update-gymclass")
 async def update_gym_class(
@@ -298,15 +307,40 @@ async def get_all_trainer_accounts_data():
         data = []
         for i in range(len(accounts)):
             try:
-                # account_data = client.get_account_info(accounts[i].pubkey)
                 account_data = client.get_account_data(accounts[i].pubkey, UserData, [8, 0])
                 if account_data.get("flag") == 5 or account_data.get("flag") == 6:
-                    trainerPubkey = PublicKey(account_data.get("owner"))
-                    account_data["account_public_key"] = str(getPubkeyFromSeed(trainerPubkey, "trainer", account_data.get("seed_random")))
-                    account_data.pop("seed_random")
+                    account_data = normalize_user_data(account_data, "trainer")
                     data.append(account_data)
             except Exception as e:
                 print(e)
+        return data
+    return make_response_auto_catch(fun)
+
+# Still in process
+@app.get("/get-pending-request")
+async def get_customer_request(
+    gymClassPubkey: str
+):
+    def fun():
+        accounts = client.get_program_accounts()
+        data = []
+        for i in range(len(accounts)):
+            try:
+                account = client.get_account_data(accounts[i].pubkey, GymClassData, [8, 4])
+                pubkey =  getPubkeyFromSeed(PublicKey(account.get("company")), "gymclass", account.get("seed_sha256"))
+                print(str(pubkey))
+                if account.get("flag") == 1 and str(pubkey) == gymClassPubkey:
+                    account = normalize_gym_class_data(account)
+                    data.append(account)
+
+            except Exception as e:
+                if str(e) != "index out of range":
+                    data.append(
+                        {
+                            "error": str(e),
+                            "pubkey": str(accounts[i].pubkey),
+                        }
+                    )
         return data
     return make_response_auto_catch(fun)
 
@@ -314,14 +348,17 @@ async def get_all_trainer_accounts_data():
 @app.get("/get-trainer-account-data")
 async def get_trainer_account_data(public_key: str):
     def fun():
-        try:
-            account_data = client.get_account_data(PublicKey(public_key), UserData, [8, 4])
-            if account_data.get("flag") == 5 or account_data.get("flag") == 6:
-                return account_data
-            else:
-                return "This is not a trainer account"
-        except Exception as e:
-            return "cannot get to user account or the public key is invalid"
+        accounts = client.get_program_accounts()
+        account_data = None
+        for i in range(len(accounts)):
+            try:
+                account_data = client.get_account_data(accounts[i].pubkey, UserData, [8, 0])
+                if account_data.get("flag") == 5 or account_data.get("flag") == 6:
+                    if account_data.get("owner") == PublicKey(public_key):
+                        account_data = normalize_user_data(account_data, "trainer")
+            except Exception as e:
+                print(e)
+        return account_data
     return make_response_auto_catch(fun)
 
 @app.get("/get-all-gym-classes-data")
@@ -333,9 +370,7 @@ async def get_all_gym_classes_data():
             try:
                 account_data = client.get_account_data(accounts[i].pubkey, GymClassData, [8, 4])
                 if account_data.get("flag") <= 4:
-                    gymClassPubkey = PublicKey(account_data.get("company"))
-                    account_data["gym_class_public_key"] = str(getPubkeyFromSeed(gymClassPubkey, "gymclass", account_data.get("seed_sha256")))
-                    account_data.pop("seed_sha256")
+                    account_data = normalize_gym_class_data(account_data)
                     data.append(account_data)
             except Exception as e:
                 pass
@@ -357,6 +392,35 @@ async def convert_keypair_to_private_key(file: fastapi.UploadFile):
         "public_key": bs58.encode(keypair_bytes[32:]),
         "private_key": bs58.encode(keypair_bytes),
     }
+
+@BaseInstructionDataClass(name="customer_join_gymclass")
+class CustomerJoinGymClassInstruction:
+    pass
+@app.post("/customer-join-gymclass")
+async def customer_join(
+    customerPrivateKey: str,
+    gymClassPubkey: str,
+):
+    def fun():
+        customer_keypair = makeKeyPair(customerPrivateKey)
+        instruction_data = CustomerJoinGymClassInstruction()
+        gym_class_pubkey = PublicKey(gymClassPubkey)
+        instruction_address = client.send_transaction(
+            instruction_data=instruction_data,
+            pubkeys=[
+                customer_keypair.public_key,
+                gym_class_pubkey,
+                makePublicKey(system_program),
+            ],
+            keypairs=[
+                customer_keypair,
+            ],
+            fee_payer=customer_keypair.public_key
+        )
+        return {
+            "instruction_address": instruction_address,
+        }
+    return make_response_auto_catch(fun)
 
 @app.get("/get-gym-class-info")
 async def get_gym_class_info(public_key: str):

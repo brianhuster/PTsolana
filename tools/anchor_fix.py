@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 
 # Fix ctx.bumps.get("{string}").map(|bump| *bump) to Some(ctx.bumps.{string})
 def fix_bumps_get_to_bumps(content: str):
@@ -110,15 +111,16 @@ def main(prefix: str = ''):
         'dot/program.rs': fix_program_rs,
     }
     for filename, fix in fix_object.items():
-        if os.path.exists(filename):
-            with open(os.path.join(prefix, filename), 'r') as file:
+        full_filename = os.path.join(prefix, filename)
+        if os.path.exists(full_filename):
+            with open(full_filename, 'r') as file:
                 content = file.read()
-            with open(os.path.join(prefix, filename), 'w') as file:
+            with open(full_filename, 'w') as file:
                 content, cnt = fix(content)
                 file.write(content)
-                print(f'Fixed total {cnt} issues in {os.path.join(prefix, filename)}')
+                print(f'Fixed total {cnt} issues in {full_filename}')
         else:
-            print(f'File {os.path.join(prefix, filename)} not found')
+            print(f'File {full_filename} not found')
 
 if __name__ == '__main__':
-    main("")
+    main(os.path.join(os.getcwd() , sys.argv[1]))
