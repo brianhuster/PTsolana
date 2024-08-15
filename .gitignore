@@ -2,3 +2,4 @@
 env
 example
 sign-in-with-solana
+*.pyc
