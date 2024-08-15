@@ -76,7 +76,7 @@ export default function TrainerForm() {
                         <FormItem>
                             <FormLabel>Class name</FormLabel>
                             <FormControl>
-                                <Input placeholder="shadcn" {...field} />
+                                <Input placeholder="class name" {...field} />
                             </FormControl>
                             <FormDescription>
                                 This is your gym class name.
