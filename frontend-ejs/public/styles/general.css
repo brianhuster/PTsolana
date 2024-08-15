@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Lato:wght@300&family=Macondo&family=Montserrat:wght@400;700&family=Noto+Sans:wght@400;500;600;700;900&family=Poppins:wght@200;300;400;500;600;700;800&family=Raleway:wght@300;400;500;600;700&family=Roboto+Condensed:wght@300;400;500;700;800&family=Roboto:wght@500;700&display=swap');
+
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  font-family: 'Poppins', 'Raleway', Arial, sans-serif;
+
+}
+
+:root{
+
+  --primary-color: #000;
+
+  --secondary-color: #f9032f;
+
+  --white-color: #fff;
+
+  --main-font-fam: 'Poppins', 'Raleway', Arial, sans-serif;
+
+  --secondary-font-fam: 'Inter', Arial, Helvetica, sans-serif;
+
+}
+
+html,body{
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  position: relative;
+  will-change: auto;
+}
+
+main{
+  padding-top: 100px;
+  position: relative;
+}
+
+a{
+  text-decoration: none;
+  color: #000;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,h2,h3,h4,h5,h6{
+  cursor: pointer;
+}
+
+p{
+  font-family: var(--secondary-font-fam);
+}
+
+
+
+
+
+
+
+/* Utility Classes */
+
+
+
+.cursor{
+  cursor: pointer;
+}
+
+.cursor-def{
+  cursor: default;
+}
+
+.underline{
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  text-decoration-color: var(--secondary-color);
+  transition: all .15s ease-in-out;
+}
+
+.text-uppercase{
+  text-transform: uppercase;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.underline:hover{
+  text-decoration: none;
+}
+
+.flex-x-center{
+  display: flex;
+  justify-content: center;
+}
+
+.flex-y-center{
+  display: flex;
+  align-items: center;
+}
+
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex{
+  display: flex;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center-column{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+}
+
+.grid{
+  display: grid;
+}
+
+.grid-center{
+  display: grid;
+  justify-items: center;
+  align-content: center;
+}

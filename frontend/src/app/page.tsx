@@ -11,7 +11,7 @@ export default function Page() {
             }}
         >
             <div className="flex justify-between w-1/2 h-[200px]">
-                <a href="/form">
+                <a href="/trainer-form">
                     <Button
                         variant="destructive"
                         className="px-10 py-10 text-3xl"
