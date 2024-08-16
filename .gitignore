@@ -5,3 +5,4 @@ sign-in-with-solana
 *.pyc
 *.pyc
 *.pyc
+/frontend/.yarn/
