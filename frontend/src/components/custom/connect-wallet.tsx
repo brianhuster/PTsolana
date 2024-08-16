@@ -15,11 +15,13 @@ export default function ConnectWallet() {
 
                 // Automatically connect if already authorized
                 const response = await solana.connect({ onlyIfTrusted: true });
-                setWalletAddress(response.publicKey.toString());
+                const personalPublicKey = response.publicKey.toString();
+                setWalletAddress(personalPublicKey);
                 console.log(
                     "Connected with Public Key:",
-                    response.publicKey.toString()
+                    personalPublicKey
                 );
+                
             } else {
                 alert("Solana object not found! Click 'Connect to Phantom Wallet' to connect to your Phantom 👻 wallet!");
             }
@@ -69,6 +71,8 @@ export default function ConnectWallet() {
 }
 
 export const checkIfWalletIsConnected = async () => {
+    const [walletAddress, setWalletAddress] = useState<string | null>(null);
+
     try {
         const { solana } = window;
         if (solana && solana.isPhantom) {
