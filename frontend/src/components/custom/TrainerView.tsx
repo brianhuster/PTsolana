@@ -5,7 +5,7 @@ import { GymData } from "@/lib/models";
 import { useEffect, useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
-export default function ViewAllGymClass() {
+export default function TrainerView() {
     const { publicKey } = useWallet();
     const [gymClasses, setGymClasses] = useState<GymData[]>([]);
     useMemo(() => {
@@ -21,7 +21,7 @@ export default function ViewAllGymClass() {
         fetchData();
     }, [publicKey]);
     return (
-        <main className="grid grid-flow-row grid-cols-4 gap-10 px-40">
+        <main className="grid grid-flow-row grid-cols-4 gap-10">
             {gymClasses.map((item, index) => (
                 <GymClassItem key={index} {...item} />
             ))}
