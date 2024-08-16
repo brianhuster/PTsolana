@@ -1,14 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { getJSON, isATrainer } from "@/lib/utils";
-async function trainer_button() {
-    const isTrainer = await isATrainer();
-    if (isTrainer) {
-        window.location.href = "/trainer";
-    } else {
-        alert("You are not a trainer. Please sign up as a trainer first.");
-        window.location.href = "/trainer/register";
-    }
-}
+
 
 export default function Page() {
     return (
@@ -26,7 +17,6 @@ export default function Page() {
                     <Button
                         variant="secondary"
                         className="px-10 py-10 text-3xl"
-                        onClick={trainer_button}
                     >
                         I am Trainer
                     </Button>

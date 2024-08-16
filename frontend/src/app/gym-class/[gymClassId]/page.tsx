@@ -1,15 +1,12 @@
 "use client";
 import { GymData } from "@/lib/models";
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
 import { getJSON } from "@/lib/utils";
-=======
 import { Button } from "@/components/ui/button";
 import customerJoinClass from "@/lib/blockchain/customerJoinClass";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { sendAndConfirmRawTransaction } from "@solana/web3.js";
->>>>>>> c8dfaf32bb0c08bf5e3dd3a822d9d8c5f84a2528
 
 export default function Page({ params }: { params: { gymClassId: string } }) {
     const [gymClass, setGymClass] = useState<GymData>();

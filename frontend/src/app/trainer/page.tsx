@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -46,10 +45,3 @@ export default function trainer() {
 }
 
 
-=======
-export default function Page() {
-    return (
-        <div>Trainer</div>
-    );
-}
->>>>>>> c8dfaf32bb0c08bf5e3dd3a822d9d8c5f84a2528

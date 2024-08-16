@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react": "^18.3.1",
+    "solana": "^1.0.7-development"
+  }
+}
