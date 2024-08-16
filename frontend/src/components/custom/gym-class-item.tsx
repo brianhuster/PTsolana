@@ -1,9 +1,14 @@
-import { GymData } from "@/lib/models";
+import { GymData, GymClassItemBtn } from "@/lib/models";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-export default function GymClassItem(gymclass: GymData) {
+
+interface GymClassItemProps {
+    gymclass: GymData;
+    buttons: GymClassItemBtn[];
+}
+export default function GymClassItem({ gymclass, buttons }: GymClassItemProps) {
     return (
         <Card className="w-[350px]">
             <div className="w-full">
@@ -21,9 +26,11 @@ export default function GymClassItem(gymclass: GymData) {
             </CardContent>
             <CardFooter className="flex justify-between">
                 <div className="font-bold">{gymclass.price}</div>
-                <a href={"/gym-class/" + gymclass.customer}>
-                    <Button>Book</Button>
-                </a>
+                {buttons.map((action) => (
+                    <a href={action.link}>
+                        <Button>{action.text}</Button>
+                    </a>
+                ))}
             </CardFooter>
         </Card>
     );

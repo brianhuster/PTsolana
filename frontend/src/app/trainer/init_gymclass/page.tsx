@@ -76,6 +76,7 @@ export default function TrainerForm() {
             const signature = await sendAndConfirmRawTransaction(connection, signedTransaction.serialize());
 
             console.log("Transaction signature:", signature);
+            alert("Transaction successful");
         } catch (error) {
             console.error("Transaction failed", error);
         }

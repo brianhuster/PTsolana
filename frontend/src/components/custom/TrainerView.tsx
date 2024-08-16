@@ -23,7 +23,16 @@ export default function TrainerView() {
     return (
         <main className="grid grid-flow-row grid-cols-4 gap-10">
             {gymClasses.map((item, index) => (
-                <GymClassItem key={index} {...item} />
+                <GymClassItem 
+                    key={index} 
+                    gymclass={item} 
+                    buttons={[{
+                        text: "Update",
+                        link: "/update-class/" + item.customer
+                    }, {
+                        text: "Delete",
+                        link: "/delete-class/" + item.customer
+                    }]} />
             ))}
         </main>
     );

@@ -37,3 +37,8 @@ export interface GymData {
     flag: number;
     seed_sha256: number;
 }
+
+export interface GymClassItemBtn {
+    text: string;
+    link: string;
+}
