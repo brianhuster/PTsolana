@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Connection } from "@solana/web3.js";
+import { PublicKey, sendAndConfirmRawTransaction } from "@solana/web3.js";
+import initGymclass from "@/lib/blockchain/initGymclass";
+import { COMPANY_PUBLIC_KEY } from "@/config";
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -44,32 +46,44 @@ export default function TrainerForm() {
             price: 0,
         },
     });
+    const { connection } = useConnection();
+    const { publicKey, signTransaction } = useWallet();
 
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        if (!publicKey || !signTransaction) {
+            console.error("Wallet not connected");
+            return;
+        }
 
-    const { connection }: { connection: Connection } = useConnection();
-    const { publicKey } = useWallet();
+        const trainerPublicKey = publicKey; // Assuming the trainer is the currently connected wallet
+        const companyPublicKey = new PublicKey(COMPANY_PUBLIC_KEY)
 
-    async function onsubmit(values: z.infer<typeof formSchema>) {
+        const name = values.name;
+        const info = values.info;
+        const price = values.price; // 1 SOL, in lamports (1 SOL = 1,000,000,000 lamports)
 
-        const res = await fetch(
-            `http://localhost:8000/init-gymclass?trainerPubkey=${publicKey}`,
-            {
-                method: "post",
-                headers: {
-                    "content-type": "application/json",
-                },
-                body: JSON.stringify(values),
-            }
-        );
-        const json = await res.json();
-        const transaction: Uint8Array = await new Uint8Array(json.transaction);
+        try {
+            const transaction = await initGymclass(
+                connection,
+                companyPublicKey,
+                trainerPublicKey,
+                name,
+                info,
+                price
+            );
 
-        await connection.sendRawTransaction(transaction)
+            const signedTransaction = await signTransaction(transaction);
+            const signature = await sendAndConfirmRawTransaction(connection, signedTransaction.serialize());
+
+            console.log("Transaction signature:", signature);
+        } catch (error) {
+            console.error("Transaction failed", error);
+        }
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onsubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
                     control={form.control}
                     name="name"

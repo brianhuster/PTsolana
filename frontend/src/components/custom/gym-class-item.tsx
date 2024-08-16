@@ -1,4 +1,4 @@
-import { GymClass, GymData } from "@/lib/models";
+import { GymData } from "@/lib/models";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";

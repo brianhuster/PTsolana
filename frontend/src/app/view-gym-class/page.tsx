@@ -1,11 +1,11 @@
 "use client";
 
 import GymClassItem from "@/components/custom/gym-class-item";
-import { GymClass, GymData } from "@/lib/models";
+import { GymData } from "@/lib/models";
 import { useEffect, useState } from "react";
 import { getJSON } from "@/lib/utils";
 
-export default function Home() {
+export default function ViewGymClass() {
     const [gymClasses, setGymClasses] = useState<GymData[]>([]);
 
     useEffect(() => {

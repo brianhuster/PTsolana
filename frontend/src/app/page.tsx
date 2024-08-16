@@ -24,14 +24,14 @@ export default function Page() {
             <div className="flex justify-between w-1/2 h-[200px]">
                 <a href="/trainer">
                     <Button
-                        variant="destructive"
+                        variant="secondary"
                         className="px-10 py-10 text-3xl"
                         onClick={trainer_button}
                     >
                         I am Trainer
                     </Button>
                 </a>
-                <a href="/home">
+                <a href="/view-gym-class">
                     <Button className="px-10 py-10 text-3xl">
                         I want to hire
                     </Button>
